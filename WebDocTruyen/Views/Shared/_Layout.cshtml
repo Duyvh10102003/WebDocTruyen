@@ -1,0 +1,92 @@
+﻿
+<!DOCTYPE html>
+<!-- saved from url=(0021)https://suustore.com/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+
+
+    <!-- Bootstrap CSS v5.2.1 -->
+
+    <link href="~/frontend/assets/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="https://suustore.com/assets/frontend/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="~/frontend/assets/app.css">
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script>
+        window.SuuTruyen = {
+            baseUrl: 'https://suustore.com',
+            urlCurrent: 'https://suustore.com',
+            csrfToken: '4EebYu2rWivdRk1ET12dyuY0CJjpRERhJynPtvUy'
+        }
+    </script>
+
+    <title>Demo Truyện</title>
+    <meta name="description"
+          content="Đọc truyện online, truyện hay. Demo Truyện luôn tổng hợp và cập nhật các chương truyện một cách nhanh nhất.">
+</head>
+
+<body>
+    @await Html.PartialAsync("_MenuPartial")
+    
+    <div class="bg-light header-bottom">
+        <div class="container py-1">
+            <p class="mb-0">
+                Đọc truyện online, đọc truyện chữ, truyện full, truyện hay. Tổng hợp đầy đủ và cập nhật liên
+                tục.
+            </p>
+        </div>
+    </div>
+
+    @RenderBody()
+    <div id="footer" class="footer border-top pt-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <a title="Đọc truyện online" class="text-dark text-decoration-none" href="#"><strong>Truyen Online</strong> - Đọc truyện online một cách nhanh nhất.</a>
+                </div>
+                <div class="col-12">
+                    <p>
+                        Website được xây dụng bởi Nhóm Báo
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/frontend/assets/jquery.min.js">
+    </script>
+    <script src="~/frontend/assets/popper.min.js">
+    </script>
+    <script src="~/frontend/assets/bootstrap.min.js">
+    </script>
+    <script src="~/frontend/assets/app.js">
+    </script>
+    <script src="~/frontend/assets/common.js"></script>
+
+
+
+    <div id="loadingPage" class="loading-full">
+        <div class="loading-full_icon">
+            <div class="spinner-grow"><span class="visually-hidden">Chờ tí đang chạy...</span></div>
+        </div>
+    </div>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+
+

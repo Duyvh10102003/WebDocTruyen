@@ -1,0 +1,100 @@
+﻿@model WebDocTruyen.ViewModel.HomeViewModel
+@{
+    ViewData["Title"] = "DocTruyen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@foreach(var item in Model.ChiTietChuongTruyen)
+{
+    <main>
+        <div class="chapter-wrapper container my-5">
+            <a href="#" class="text-decoration-none">
+                <h1 class="text-center text-success">@item.Truyen.TenTruyen</h1>
+            </a>
+            <a href="#" class="text-decoration-none">
+                <p class="text-center text-dark">@item.TenChuong</p>
+            </a>
+            <hr class="chapter-start container-fluid">
+            <div class="chapter-nav text-center">
+                <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
+                    <a class="btn btn-success me-1 chapter-prev"
+                       asp-action="ChuongTruoc" asp-route-truyenId="@item.Truyen.TruyenId" asp-route-order="@item.DisplayOrder" title="">
+                        <span>
+                            Chương trước
+                        </span>
+                    </a>
+                   
+
+                    <div class="dropdown select-chapter me-1 ">
+                        <a class="btn btn-success dropdown-toggle" role="button" id="dropdownMenuLink"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Chọn chương
+                        </a>
+
+                        <ul class="dropdown-menu select-chapter__list" aria-labelledby="dropdownMenuLink">
+                            @foreach(var i in Model.DSChuongTruyen)
+                            {
+                                <li><a class="dropdown-item" asp-action="DocTruyen" asp-route-id="@i.ChuongTruyenId" asp-route-truyenId="@i.TruyenId">@i.TenChuong</a></li>
+
+                            }
+                        </ul>
+
+                    </div>
+                    <a class="btn btn-success chapter-next"
+                       asp-action="ChuongTiepTheo" asp-route-truyenId="@item.Truyen.TruyenId" asp-route-order="@item.DisplayOrder"
+                        title="">
+                        
+                        <span>
+                            Chương tiếp
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <hr class="chapter-end container-fluid">
+
+
+            <div class="chapter-content mb-3">
+                <div class="visible-md visible-lg ads-responsive incontent-ad" id="ads-chapter-pc-top" align="center"
+                     style="height:90px;"></div>
+                    @Html.Raw(item.NoiDung)
+            </div>
+            <hr class="chapter-start container-fluid">
+            <div class="chapter-nav text-center">
+                <div class="chapter-actions chapter-actions-origin d-flex align-items-center justify-content-center">
+                    <a class="btn btn-success me-1 chapter-prev"
+                       asp-action="ChuongTruoc" asp-route-truyenId="@item.Truyen.TruyenId" asp-route-order="@item.DisplayOrder" title="">
+                        <span>
+                            Chương trước
+                        </span>
+                    </a>
+
+
+                    <div class="dropdown select-chapter me-1 ">
+                        <a class="btn btn-success dropdown-toggle" role="button" id="dropdownMenuLink"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Chọn chương
+                        </a>
+
+                        <ul class="dropdown-menu select-chapter__list" aria-labelledby="dropdownMenuLink">
+                            @foreach (var i in Model.DSChuongTruyen)
+                            {
+                                <li><a class="dropdown-item" asp-action="DocTruyen" asp-route-id="@i.ChuongTruyenId" asp-route-truyenId="@i.TruyenId">@i.TenChuong</a></li>
+
+                            }
+                        </ul>
+
+                    </div>
+                    <a class="btn btn-success chapter-next"
+                       asp-action="ChuongTiepTheo" asp-route-truyenId="@item.Truyen.TruyenId" asp-route-order="@item.DisplayOrder"
+                       title="">
+
+                        <span>
+                            Chương tiếp
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+}
+
+

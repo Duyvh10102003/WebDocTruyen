@@ -1,0 +1,28 @@
+﻿@model WebDocTruyen.Models.TacGia
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Xoá tác giả</h1>
+
+<h3>Bạn có chắc chắn xoá tác giả này?</h3>
+<div>
+    <h4>Tác Giả</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Tên tác giả
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TenTacGia)
+        </dd>
+     
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TacGiaId" />
+        <input type="submit" value="Xoá" class="btn btn-danger" /> |
+        <a class="btn btn-info" asp-action="Index">Trở về danh sách</a>
+    </form>
+</div>

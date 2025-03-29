@@ -1,0 +1,73 @@
+﻿@model PaginatedList<WebDocTruyen.Models.ChuongTruyen>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1>Danh sách các chương của truyện</h1>
+<p>
+    <a class="btn btn-primary"  asp-action="Create">Tạo chương mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên Chương</th>
+            <th>Nội Dung</th>
+            <th>Thứ Tự Hiển Thị</th>
+            <th>Truyện</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TenChuong)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NoiDung)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DisplayOrder)</td>
+                   
+                    <td>@Html.DisplayFor(modelItem => item.Truyen.TenTruyen)</td>
+                    <td>
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.ChuongTruyenId">Sửa</a> |
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.ChuongTruyenId">Chi Tiết</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ChuongTruyenId">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>Không có dữ liệu để hiển thị.</p>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
+                Trang Trước
+            </a>
+            @for (int i = 1; i <= @Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == @Model.PageIndex ? "active" : "")">
+
+                    <a class="page-link"
+                       href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+
+                </li>
+            }
+            <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">
+                Trang Sau
+            </a>
+        </ul>
+    </nav>
+</div>
+
+
+

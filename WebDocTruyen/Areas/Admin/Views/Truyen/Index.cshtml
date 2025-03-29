@@ -1,0 +1,178 @@
+﻿@model PaginatedList<WebDocTruyen.Models.Truyen>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $("#search-input").keyup(function () {
+            var query = $(this).val();
+            if (query !== '') {
+                $.ajax({
+                    url: "/Admin/Truyen/SearchSuggestions",
+                    type: "GET",
+                    data: { query: query },
+                    dataType: "json",
+                    success: function (data) {
+                        $("#search-results").empty(); // Clear previous suggestions
+                        $.each(data, function (index, suggestion) {
+                            $("#search-results").append("<div class='suggestion'>" + suggestion + "</div>"); // Append new suggestions
+                        });
+                        $(".dropdown-content").css("display", "block"); // Show dropdown
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error:", error);
+                    }
+                });
+            } else {
+                $("#search-results").empty(); // Clear suggestions if query is empty
+                $(".dropdown-content").css("display", "none"); // Hide dropdown if input is empty
+            }
+        });
+        // Handle click on suggestion
+        $(document).on("click", ".suggestion", function () {
+            var selectedSuggestion = $(this).text();
+            $("#search-input").val(selectedSuggestion); // Set search input value to selected suggestion
+            $("#search-results").empty(); // Clear suggestions
+            $(".dropdown-content").css("display", "none"); // Hide dropdown
+        });
+        // Close dropdown if user clicks outside of it
+        $(document).click(function (event) {
+            if (!$(event.target).closest('.dropdown').length) {
+                $(".dropdown-content").css("display", "none");
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("#search-form").submit(function (event) {
+            // Prevent default form submission behavior
+            event.preventDefault();
+            // Get the search query from the input field
+            var query = $("#search-input").val();
+            // Call the SearchProducts action via AJAX
+            $.ajax({
+                url: "/Admin/Truyen/SearchTruyens",
+                type: "GET",
+                data: { query: query },
+                success: function (data) {
+                    // Handle the response, for example, update a div with the search results
+                    $("#truyens").html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+<style>
+    /* Style the dropdown menu */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000; /* Ensure dropdown is above other elements */
+        max-height: 200px; /* Adjust max-height as needed */
+        overflow-y: auto; /* Enable scrolling if needed */
+        width: 100%; /* Set width to match search input */
+        box-sizing: border-box; /* Ensure width includes padding and
+
+    border */
+    }
+    /* Style each suggestion item */
+    .suggestion {
+        padding: 10px;
+        cursor: pointer;
+    }
+        /* Change color of suggestion item on hover */
+        .suggestion:hover {
+            background-color: #f4f4f4;
+        }
+</style>
+
+<h1>Danh sách các truyện</h1>
+<form id="search-form" method="get" class="dropdown">
+    <input id="search-input" type="text" name="query" placeholder="Tìm Sách..." aria-label="Tìm Sách..."/>
+    <div id="search-results" class="dropdown-content">
+        <!-- Suggestions will be appended here -->
+    </div>
+    <input type="submit" value="Tìm kiếm" />
+</form>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Thêm truyện</a>
+</p>
+<table id="truyens" class="table">
+   <thead>
+       <tr>
+            <th>Tên Truyện </th>
+            <th>Tóm tắt truyện</th>
+            <th>Bìa Truyện</th>
+            <th>Tác Giả</th>
+            <th>Thể Loại</th>
+            <th>Trạng Thái</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenTruyen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoiDung)
+            </td>
+            <td>
+                <img src="@Html.DisplayFor(modelItem => item.Anh)" width="auto" height="300px" alt="Loi">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TacGia.TenTacGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TheLoai.TenTheLoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai.TrangThaiTruyen)
+            </td>
+            <td>
+
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.TruyenId">Sửa</a> |
+                    <a class="btn btn-info"  asp-action="Details" asp-route-id="@item.TruyenId">Chi tiết</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.TruyenId">Xoá</a> |
+                    <a class="btn btn-success" asp-area="Admin" asp-controller="ChuongTruyen" asp-action="Index" asp-route-id="@item.TruyenId">Chương truyện</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
+                Trang trước
+            </a> 
+            @for (int i = 1; i <= @Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == @Model.PageIndex ? "active" : "")">
+
+                    <a class="page-link"
+                       href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+
+                </li>
+            } 
+            <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" class="btn btn-default @nextDisabled">
+                Trang sau
+            </a>
+        </ul>
+    </nav>
+</div>
+
+

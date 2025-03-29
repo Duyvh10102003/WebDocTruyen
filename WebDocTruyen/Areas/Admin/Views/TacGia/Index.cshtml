@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebDocTruyen.Models.TacGia>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Danh sách tác giả</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Thêm tác giả mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên tác giả
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenTacGia)
+            </td>
+           
+            <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.TacGiaId">Sửa</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.TacGiaId">Chi tiết</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.TacGiaId">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
